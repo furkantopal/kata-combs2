@@ -19,16 +19,16 @@ describe("App", () => {
 
     app.execute("GO N");
 
-    expect(mockPrinter).toBeCalledWith("New Location Title");
-    expect(mockPrinter).toBeCalledWith("New Location Description");
+    expect(mockPrinter).toBeCalledWith("Lost in Reception");
+    expect(mockPrinter).toBeCalledWith("Cazoo Reception description");
   });
 
   test("don't output location and description for no action", () => {
     const mockPrinter = jest.fn();
     new App(mockPrinter);
 
-    expect(mockPrinter).not.toBeCalledWith("New Location Title");
-    expect(mockPrinter).not.toBeCalledWith("New Location Description");
+    expect(mockPrinter).not.toBeCalledWith("Lost in Reception");
+    expect(mockPrinter).not.toBeCalledWith("Cazoo Reception description");
   });
 
   test("should not be able to move south to the new location", () => {
@@ -37,8 +37,8 @@ describe("App", () => {
 
     app.execute("GO S");
 
-    expect(mockPrinter).not.toBeCalledWith("New Location Title");
-    expect(mockPrinter).not.toBeCalledWith("New Location Description");
+    expect(mockPrinter).not.toBeCalledWith("Lost in Reception");
+    expect(mockPrinter).not.toBeCalledWith("Cazoo Reception description");
     expect(mockPrinter).toBeCalledWith("I can't do that here!");
   });
 
@@ -49,6 +49,6 @@ describe("App", () => {
     app.execute("GO N");
     app.execute("GO S");
 
-    expect(mockPrinter).lastCalledWith("Cazoo Churchway description");
+    expect(mockPrinter).lastCalledWith("Lost in Cazoo Churchway");
   });
 });
