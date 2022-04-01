@@ -8,6 +8,7 @@ type Location = {
   southLocation?: Location;
   westLocation?: Location;
   eastLocation?: Location;
+  downstairs?: Location;
 };
 export const churchway: Location = {
   description: "Lost in Cazoo Churchway",
@@ -31,12 +32,18 @@ export const somersTownCoffeeHouse: Location = {
   title: "The Somers Town Coffee House",
 };
 
+const basement: Location = {
+  description: "Basement",
+  title: "Basement",
+};
+
 churchway.northLocation = reception;
 churchway.westLocation = somersTownCoffeeHouse;
 somersTownCoffeeHouse.eastLocation = churchway;
 reception.southLocation = churchway;
 churchway.eastLocation = cafe49;
 cafe49.westLocation = churchway;
+churchway.downstairs = basement;
 
 export class App {
   // eslint-disable-next-line no-empty-function
@@ -71,6 +78,9 @@ export class App {
       this.hasSandwitch = true;
 
       this.printer("SANDWICH TAKEN");
+    } else if (action === "GO DOWN" && this.location === churchway) {
+      this.describeLocation();
+      this.printer("GO DOWN");
     } else {
       this.printer("I can't do that here!");
     }

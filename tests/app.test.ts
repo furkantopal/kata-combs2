@@ -80,7 +80,7 @@ describe("App", () => {
     app.execute("GO E");
     app.execute("TAKE SANDWICH");
     app.execute("GO W");
-    app.execute("GO UP");
+    app.execute("GO DOWN");
     app.execute("USE SANDWICH");
 
     expect(mockPrinter).lastCalledWith("You eat the sandwich");
