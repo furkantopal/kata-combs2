@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 // eslint-disable-next-line no-unused-vars
 type Printer = (line: string) => void;
 
@@ -9,6 +10,7 @@ type Location = {
   westLocation?: Location;
   eastLocation?: Location;
   downstairs?: Location;
+  upstairs?: Location;
 };
 export const churchway: Location = {
   description: "Lost in Cazoo Churchway",
@@ -37,13 +39,34 @@ const basement: Location = {
   title: "Basement",
 };
 
-churchway.northLocation = reception;
-churchway.westLocation = somersTownCoffeeHouse;
-somersTownCoffeeHouse.eastLocation = churchway;
-reception.southLocation = churchway;
-churchway.eastLocation = cafe49;
-cafe49.westLocation = churchway;
-churchway.downstairs = basement;
+const createNorthSouthConnection = (
+  southLocation: Location,
+  northLocation: Location
+) => {
+  southLocation.northLocation = northLocation;
+  northLocation.southLocation = southLocation;
+};
+
+const createEastWestConnection = (
+  eastLocation: Location,
+  westLocation: Location
+) => {
+  eastLocation.westLocation = westLocation;
+  westLocation.eastLocation = eastLocation;
+};
+
+const createUpDownConnection = (
+  upLocation: Location,
+  downLocation: Location
+) => {
+  upLocation.downstairs = downLocation;
+  downLocation.upstairs = upLocation;
+};
+
+createNorthSouthConnection(churchway, reception);
+createEastWestConnection(churchway, somersTownCoffeeHouse);
+createEastWestConnection(cafe49, churchway);
+createUpDownConnection(churchway, basement);
 
 export class App {
   // eslint-disable-next-line no-empty-function
@@ -59,31 +82,34 @@ export class App {
 
   public execute(action: string): void {
     if (action === "GO N" && this.location.northLocation) {
-      this.location = this.location.northLocation;
-
-      this.describeLocation();
+      this.moveToLocation(this.location.northLocation);
     } else if (action === "GO S" && this.location.southLocation) {
-      this.location = this.location.southLocation;
-
-      this.describeLocation();
+      this.moveToLocation(this.location.southLocation);
     } else if (action === "GO W" && this.location.westLocation) {
-      this.location = this.location.westLocation;
-
-      this.describeLocation();
+      this.moveToLocation(this.location.westLocation);
     } else if (action === "GO E" && this.location.eastLocation) {
-      this.location = this.location.eastLocation;
-
-      this.describeLocation();
+      this.moveToLocation(this.location.eastLocation);
+    } else if (action === "GO DOWN" && this.location.downstairs) {
+      this.moveToLocation(this.location.downstairs);
     } else if (action === "TAKE SANDWICH" && this.location === cafe49) {
       this.hasSandwitch = true;
 
       this.printer("SANDWICH TAKEN");
-    } else if (action === "GO DOWN" && this.location === churchway) {
-      this.describeLocation();
-      this.printer("GO DOWN");
+    } else if (
+      action === "USE SANDWICH" &&
+      this.location === basement &&
+      this.hasSandwitch
+    ) {
+      this.printer("You eat the sandwich");
     } else {
       this.printer("I can't do that here!");
     }
+  }
+
+  private moveToLocation(l: Location) {
+    this.location = l;
+
+    this.describeLocation();
   }
 
   private describeLocation() {
