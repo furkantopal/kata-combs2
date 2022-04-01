@@ -1,22 +1,25 @@
 /* eslint-disable */
 type Printer = (line: string) => void;
-type Inputer = (action: string) => void;
 
 class App {
   // eslint-disable-next-line no-empty-function
-  constructor(private _printer: Printer, inputer: Inputer) {
-    _printer("Lost in Cazoo Churchway");
-    _printer("Cazoo Churchway description");
-    _printer("New Location Title");
-    _printer("New Location Description");
+  constructor(private printer: Printer) {
+    printer("Lost in Cazoo Churchway");
+    printer("Cazoo Churchway description");
+  }
+
+  public execute(_action: string): void {
+    this.printer("New Location Title");
+    this.printer("New Location Description");
+    this.printer("New Location Description");
   }
 }
 
 describe("App", () => {
-  const mockPrinter = jest.fn();
-
   test("should show the title and description", () => {
-    const app = new App(mockPrinter, jest.fn());
+    const mockPrinter = jest.fn();
+    new App(mockPrinter);
+
     expect(mockPrinter).toHaveBeenNthCalledWith(1, "Lost in Cazoo Churchway");
     expect(mockPrinter).toHaveBeenNthCalledWith(
       2,
@@ -25,20 +28,31 @@ describe("App", () => {
   });
 
   test("should go north and describe new location", () => {
-    const mockInputer = jest.fn();
-    const app = new App(mockPrinter, mockInputer);
+    const mockPrinter = jest.fn();
+    const app = new App(mockPrinter);
 
-    mockInputer("GO N");
+    app.execute("GO N");
 
     expect(mockPrinter).toBeCalledWith("New Location Title");
     expect(mockPrinter).toBeCalledWith("New Location Description");
   });
 
   test("don't output location and description for no action", () => {
-    const mockInputer = jest.fn();
-    const app = new App(mockPrinter, mockInputer);
+    const mockPrinter = jest.fn();
+    new App(mockPrinter);
 
     expect(mockPrinter).not.toBeCalledWith("New Location Title");
     expect(mockPrinter).not.toBeCalledWith("New Location Description");
+  });
+
+  test("should not be able to move south to the new location", () => {
+    const mockPrinter = jest.fn();
+    const app = new App(mockPrinter);
+
+    app.execute("GO S");
+
+    expect(mockPrinter).not.toBeCalledWith("New Location Title");
+    expect(mockPrinter).not.toBeCalledWith("New Location Description");
+    expect(mockPrinter).toBeCalledWith("I can't do that here!");
   });
 });
