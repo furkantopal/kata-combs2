@@ -34,7 +34,7 @@ export const somersTownCoffeeHouse: Location = {
   title: "The Somers Town Coffee House",
 };
 
-const basement: Location = {
+export const basement: Location = {
   description: "Basement",
   title: "Basement",
 };

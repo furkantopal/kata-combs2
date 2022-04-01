@@ -77,11 +77,25 @@ describe("App", () => {
     const mockPrinter = jest.fn();
     const app = new App(mockPrinter);
 
+    app.execute("GO N");
+    app.execute("GO S");
     app.execute("GO E");
     app.execute("TAKE SANDWICH");
     app.execute("GO W");
     app.execute("GO DOWN");
     app.execute("USE SANDWICH");
+
+    expect(mockPrinter).lastCalledWith("You eat the sandwich");
+  });
+
+  test("should go to the pub, get a pint, drink it and return to Churchway", () => {
+    const mockPrinter = jest.fn();
+    const app = new App(mockPrinter);
+
+    app.execute("GO W");
+    app.execute("TAKE PINT");
+    app.execute("USE PINT");
+    app.execute("GO E");
 
     expect(mockPrinter).lastCalledWith("You eat the sandwich");
   });
