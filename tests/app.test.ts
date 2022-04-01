@@ -1,19 +1,5 @@
 /* eslint-disable */
-type Printer = (line: string) => void;
-
-class App {
-  // eslint-disable-next-line no-empty-function
-  constructor(private printer: Printer) {
-    printer("Lost in Cazoo Churchway");
-    printer("Cazoo Churchway description");
-  }
-
-  public execute(_action: string): void {
-    this.printer("New Location Title");
-    this.printer("New Location Description");
-    this.printer("New Location Description");
-  }
-}
+import { App } from "./app";
 
 describe("App", () => {
   test("should show the title and description", () => {
@@ -54,5 +40,15 @@ describe("App", () => {
     expect(mockPrinter).not.toBeCalledWith("New Location Title");
     expect(mockPrinter).not.toBeCalledWith("New Location Description");
     expect(mockPrinter).toBeCalledWith("I can't do that here!");
+  });
+
+  test("should go back to location you came from", () => {
+    const mockPrinter = jest.fn();
+    const app = new App(mockPrinter);
+
+    app.execute("GO N");
+    app.execute("GO S");
+
+    expect(mockPrinter).lastCalledWith("Cazoo Churchway description");
   });
 });
