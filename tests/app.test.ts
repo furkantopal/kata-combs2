@@ -72,4 +72,17 @@ describe("App", () => {
 
     expect(mockPrinter).lastCalledWith(cafe49.description);
   });
+
+  test("should go to cafe 49, take a sandwich and come back to Churchway, go upstairs and eat the sandwich", () => {
+    const mockPrinter = jest.fn();
+    const app = new App(mockPrinter);
+
+    app.execute("GO E");
+    app.execute("TAKE SANDWICH");
+    app.execute("GO W");
+    app.execute("GO UP");
+    app.execute("USE SANDWICH");
+
+    expect(mockPrinter).lastCalledWith("You eat the sandwich");
+  });
 });

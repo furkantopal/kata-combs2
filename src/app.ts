@@ -35,11 +35,15 @@ churchway.northLocation = reception;
 churchway.westLocation = somersTownCoffeeHouse;
 somersTownCoffeeHouse.eastLocation = churchway;
 reception.southLocation = churchway;
+churchway.eastLocation = cafe49;
+cafe49.westLocation = churchway;
 
 export class App {
   // eslint-disable-next-line no-empty-function
 
   private location: Location = churchway;
+
+  private hasSandwitch: boolean = false;
 
   // eslint-disable-next-line no-unused-vars
   constructor(private printer: Printer) {
@@ -59,6 +63,14 @@ export class App {
       this.location = this.location.westLocation;
 
       this.describeLocation();
+    } else if (action === "GO E" && this.location.eastLocation) {
+      this.location = this.location.eastLocation;
+
+      this.describeLocation();
+    } else if (action === "TAKE SANDWICH" && this.location === cafe49) {
+      this.hasSandwitch = true;
+
+      this.printer("SANDWICH TAKEN");
     } else {
       this.printer("I can't do that here!");
     }
